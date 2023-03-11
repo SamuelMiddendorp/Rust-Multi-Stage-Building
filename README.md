@@ -9,7 +9,7 @@ Because docker has no way to cache different stages of cargo build all dependenc
 
 Run: `docker build -t fast_rust_deployment . -f dockerfile_old` to see our baseline.
 
-Bellow results are running in completely clean docker env, you can use `docker builder prune` to remove all cached docker objects.
+Below results are running in completely clean docker env, you can use `docker builder prune` to remove all cached docker objects.
 
 -   Baseline first run: <br />
  `[+] Building 179.3s (9/9) FINISHED`
@@ -35,7 +35,7 @@ Run: `docker build -t fast_rust_deployment .` to see the improvements:
  `[+] Building 185.1s (21/21) FINISHED`
 -   Second run we run the exact same command with no changes to the source code: <br />
  `[+] Building 1.1s (21/21) FINISHED`
-    - We can take a closer look at what actions docker is actually caching for us (its almost everything): <br />
+    - We can take a closer look at what actions docker is actually caching for us (it's almost everything): <br />
         ```
         => CACHED [main 2/6] COPY . /app    
         => CACHED [main 3/6] WORKDIR /app
@@ -54,7 +54,7 @@ Run: `docker build -t fast_rust_deployment .` to see the improvements:
 
 - The third run we make a small change in the source code of our app: <br />
  `[+] Building 16.6s (21/21) FINISHED`
-    - Again its interesting to see what docker has cached for us, it seems we don't have to recompile our dependencies after all!<br/>
+    - Again it's interesting to see what docker has cached for us, it seems we don't have to recompile our dependencies after all!<br/>
         ``` 
         => CACHED [apetizer 2/5] WORKDIR /app 
         => CACHED [apetizer 3/5] RUN cargo install cargo-chef
