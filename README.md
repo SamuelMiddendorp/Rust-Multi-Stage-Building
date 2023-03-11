@@ -11,13 +11,13 @@ Run: `docker build -t fast_rust_deployment . -f dockerfile_old` to see our basel
 
 Bellow results are running in completely clean docker env, you can use `docker builder prune` to remove all cached docker objects.
 
--   Baseline first run:
+-   Baseline first run: <br />
  `[+] Building 179.3s (9/9) FINISHED`
 
--   Second run takes away the time it took docker to get nightly but all dependencies are still reinstalled:
+-   Second run takes away the time it took docker to get nightly but all dependencies are still reinstalled: <br />
  `[+] Building 53.1s (9/9) FINISHED`
 
-It is also important to know our image size is well over 4 gb in size:
+It is also important to know our image size is well over 4 gb in size: <br />
 -   `fast_rust_deployment   latest    2cbd9dab0e9a   5 minutes ago   4.26GB`
 
 
@@ -31,30 +31,30 @@ It is also important to know our image size is well over 4 gb in size:
  |  *main*     | Build our app with all our dependencies already present|
 
 Run: `docker build -t fast_rust_deployment .` to see the improvements:
--   Multi stage first run:
+-   Multi stage first run: <br />
  `[+] Building 185.1s (21/21) FINISHED`
--   Second run we run the exact same command with no changes to the source code:
+-   Second run we run the exact same command with no changes to the source code: <br />
  `[+] Building 1.1s (21/21) FINISHED`
-    - We can take a closer look at what actions docker is actually caching for us (its almost everything):
+    - We can take a closer look at what actions docker is actually caching for us (its almost everything): <br />
         ```
-     => CACHED [main 2/6] COPY . /app    
-     => CACHED [main 3/6] WORKDIR /app
-     => CACHED [apetizer 2/5] WORKDIR /app
-     => CACHED [apetizer 3/5] RUN cargo install cargo-chef
-     => CACHED [apetizer 4/5] COPY . . 
-     => CACHED [apetizer 5/5] RUN cargo chef prepare --recipe-path recipe.json
-     => CACHED [starter 4/5] COPY --from=apetizer /app/recipe.json recipe.json
-     => CACHED [starter 5/5] RUN cargo chef cook --release --recipe-path recipe.json
-     => CACHED [main 4/6] COPY --from=starter /app/target target
-     => CACHED [main 5/6] COPY --from=starter /usr/local/cargo /usr/local/cargo
-     => CACHED [main 6/6] RUN cargo build --release
-     => CACHED [stage-3 2/3] COPY --from=main /app/target/release/fast_rust_deployment /app/fast_rust_deployment
-     => CACHED [stage-3 3/3] WORKDIR /app   
+        => CACHED [main 2/6] COPY . /app    
+        => CACHED [main 3/6] WORKDIR /app
+        => CACHED [apetizer 2/5] WORKDIR /app
+        => CACHED [apetizer 3/5] RUN cargo install cargo-chef
+        => CACHED [apetizer 4/5] COPY . . 
+        => CACHED [apetizer 5/5] RUN cargo chef prepare --recipe-path recipe.json
+        => CACHED [starter 4/5] COPY --from=apetizer /app/recipe.json recipe.json
+        => CACHED [starter 5/5] RUN cargo chef cook --release --recipe-path recipe.json
+        => CACHED [main 4/6] COPY --from=starter /app/target target
+        => CACHED [main 5/6] COPY --from=starter /usr/local/cargo /usr/local/cargo
+        => CACHED [main 6/6] RUN cargo build --release
+        => CACHED [stage-3 2/3] COPY --from=main /app/target/release/fast_rust_deployment /app/fast_rust_deployment
+        => CACHED [stage-3 3/3] WORKDIR /app   
         ```   
 
-- The third run we make a small change in the source code of our app:
+- The third run we make a small change in the source code of our app: <br />
  `[+] Building 16.6s (21/21) FINISHED`
-    - Again its interesting to see what docker has cached for us, it seems we don't have to recompile our dependencies after all!
+    - Again its interesting to see what docker has cached for us, it seems we don't have to recompile our dependencies after all!<br/>
         ``` 
         => CACHED [apetizer 2/5] WORKDIR /app 
         => CACHED [apetizer 3/5] RUN cargo install cargo-chef
@@ -62,7 +62,7 @@ Run: `docker build -t fast_rust_deployment .` to see the improvements:
         => CACHED [starter 5/5] RUN cargo chef cook --release --recipe-path recipe.json  
         ```
 
-Because all the binaries have been built our final image can be rather small as well:
+Because all the binaries have been built our final image can be rather small as well: <br />
 - `fast_rust_deployment   latest    8d1fb6421aa7   57 minutes ago   75.3MB`
 
 ## Concluding
