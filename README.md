@@ -49,7 +49,8 @@ Run: `docker build -t fast_rust_deployment .` to see the improvements:
      => CACHED [main 5/6] COPY --from=starter /usr/local/cargo /usr/local/cargo
      => CACHED [main 6/6] RUN cargo build --release
      => CACHED [stage-3 2/3] COPY --from=main /app/target/release/fast_rust_deployment /app/fast_rust_deployment
-     => CACHED [stage-3 3/3] WORKDIR /app     
+     => CACHED [stage-3 3/3] WORKDIR /app   
+        ```   
 
 - The third run we make a small change in the source code of our app:
  `[+] Building 16.6s (21/21) FINISHED`
