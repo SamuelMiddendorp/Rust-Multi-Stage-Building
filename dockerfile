@@ -1,4 +1,4 @@
-FROM rustlang/rust:nightly as apetizer
+FROM rustlang/rust:nightly as appetizer
 WORKDIR /app
 RUN cargo install cargo-chef
 COPY . .
@@ -7,7 +7,7 @@ RUN cargo chef prepare --recipe-path recipe.json
 FROM rustlang/rust:nightly as starter
 WORKDIR /app
 RUN cargo install cargo-chef
-COPY --from=apetizer /app/recipe.json recipe.json
+COPY --from=appetizer /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 
 FROM rustlang/rust:nightly as main
